@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Prikaz zaspolenika</title>
+        <!-- Bootstrap 5 CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">        
+    </head>
+    <body>
+         <!-- Modal -->
+         <div class="modal fade" id="addClassModal" tabindex="-1" aria-labelledby="addClassModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addClassModalLabel">Dodaj zaposlenika</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addClassForm" method="POST" action="/employees/add">
+                            <div class="mb-3">
+                                <label for="first_name" class="form-label">Ime</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name">
+                               
+                            </div>
+                            <div class="mb-3">
+                                <label for="last_name" class="form-label">Prezime</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name">
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="text" class="form-control" id="email" name="email">
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone_number" class="form-label">Broj</label>
+                                <input type="number" class="form-control" id="phone_number" name="phone_number">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
+                        <button type="button" class="btn btn-primary" id="addClassBtn">Dodaj zaposlenika</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="editClassModal" tabindex="-1" aria-labelledby="editClassModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addClassModalLabel">Uredi zaposlenike</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addClassForm" method="POST" action="/employees/add">
+                            <div class="mb-3">
+                                <label for="first_name" class="form-label">Ime</label>
+                                <input type="hidden" class="form-control" id="employeeIdEdit" name="employeeIdEdit">
+                                <input type="text" class="form-control" id="first_nameEdit" name="first_nameEdit">
+                            </div>
+                            <div class="mb-3">
+                                <label for="last_name" class="form-label">Prezime</label>
+                                <input type="text" class="form-control" id="last_nameEdit" name="last_nameEdit">
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="text" class="form-control" id="emailEdit" name="emailEdit">
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone_number" class="form-label">Broj</label>
+                                <input type="number" class="form-control" id="phone_numberEdit" name="phone_numberEdit">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
+                        <button type="button" class="btn btn-primary" id="editClassBtn">Uredi zaposlenike</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row mt-3 mb-3">
+                <div class="col">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClassModal">
+                        Dodaj zaspolenika
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <table id="classesTbl" class="table table-bordered table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Ime</th>
+                                <th scope="col">Prezime</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Broj</th>
+                                <th scope="col">Akcije</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for employee in employees %}
+                            <tr id="row-{{ employee.id}}">
+                                <td>{{ employee.id}}</td>
+                                <td>{{ employee.first_name }}</td>
+                                <td>{{ employee.last_name }}</td>
+                                <td>{{ employee.email }}</td>
+                                <td>{{ employee.phone_number}}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger deleteClassBtn" data-id="{{ employee.id }}">Briši</button>
+                                    <button class="btn btn-sm btn-default editClassBtn" data-id="{{ employee.id }}">Uredi</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Bootstrap 5 JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js" integrity="sha512-oFOCo2/3DtjrJG4N27BjSLQWoiBv171sK6a+JiWjp/7agxC2nCUP358AqzxkBUb5jX8g6CYLPdSKQTbC0weCwA==" crossorigin="anonymous"></script>
+    
+        <script>
+            $(document).ready(function() {
+                var socket = io.connect('http://127.0.0.1:5000/kafka');
+
+                $(document).on('click', '.editClassBtn', function() {
+                    var id = $(this).data('id');
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/employees/" + id,
+                        success: function(data) {
+                            $('#first_nameEdit').val(data[0].first_name);
+                            $('#last_nameEdit').val(data[0].last_name);
+                            $('#emailEdit').val(data[0].email);
+                            $('#phone_numberEdit').val(data[0].phone_number);
+                            $('#employeeIdEdit').val(data[0].id);
+                            $("#editClassModal").modal("show");
+                        },
+                        error: function(error) {
+                            console.error('Nastala je greška:', error);
+                        }
+                    });
+                });
+                $(document).on('click', '#editClassBtn',function(event) {
+                    event.preventDefault(); // Zaustavi formu 
+                    var formData = {
+                        id: $("#employeeIdEdit").val(),
+                        first_name: $("#first_nameEdit").val(),
+                        last_name: $("#last_nameEdit").val(),
+                        email: $("#emailEdit").val(),
+                        phone_number: $("#phone_numberEdit").val()
+                    };
+                    $.ajax({
+                        type: "PUT",
+                        url: "/employees/edit",
+                        data: formData,
+                        success: function(response) {
+                            console.log("Zaposlenik uređen!");
+                            $("#editClassModal").modal("hide");
+                        },
+                        error: function(error) {
+                            console.error("Nastala je greška:", error);
+                        }
+                    });
+                });
+                $(document).on('click', '#addClassBtn',function(event) {
+                    event.preventDefault(); // Zaustavi formu 
+                    var formData = {
+                        first_name: $("#first_name").val(),
+                        last_name: $("#last_name").val(),
+                        email: $("#email").val(),
+                        phone_number: $("#phone_number").val(),
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: "/employees/add",
+                        data: formData,
+                        success: function(response) {
+                            console.log("Zaposlenik dodan!");
+                        },
+                        error: function(error) {
+                            console.error("Nastala je greška:", error);
+                        }
+                    });
+                });
+
+                $(document).on('click', '.deleteClassBtn', function() {
+                    var row = $(this).closest('tr');
+                    var id = $(this).data('id');
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/employees/delete/" + id,
+                        success: function(data) {
+                            if (data.message) {
+                                row.remove();
+                            }
+                        },
+                        error: function(error) {
+                            console.error('Nastala je greška:', error);
+                        }
+                    });
+                });
+
+                socket.on('connect', function() {
+                    console.log('Connected to SocketIO server');
+                });
+
+                socket.on('data', function(msg) {
+                    msg["employee"].forEach(function(employee) {
+                        var table = $('#classesTbl'); // Identifikator tablice
+                        var rowId = "row-" + employee.id;
+                        var existingRow = $('#' + rowId);
+                        
+                        if (existingRow.length) {
+                            // Ažuriraj postojeći redak
+                            existingRow.find('td:eq(1)').text(employee.first_name);
+                            existingRow.find('td:eq(2)').text(employee.last_name);
+                            existingRow.find('td:eq(3)').text(employee.email);
+                            existingRow.find('td:eq(4)').text(employee.phone_number);
+                        } else {
+                            // Dodaj novi redak
+                            var row = $('<tr>').attr('id', rowId);
+                            row.append($('<td>').text(employee.id));
+                            row.append($('<td>').text(employee.first_name));
+                            row.append($('<td>').text(employee.last_name));
+                            row.append($('<td>').text(employee.email));
+                            row.append($('<td>').text(employee.phone_number));
+                            
+                            var deleteBtn = $('<button>').addClass('btn btn-sm btn-danger deleteClassBtn')
+                                                        .attr('data-id', employee.id)
+                                                        .text('Briši');
+
+                            var editBtn = $('<button>').addClass('btn btn-sm btn-default editClassBtn')
+                                                        .attr('data-id', employee.id)
+                                                        .text('Uredi');
+                            
+                            var deleteCell = $('<td>').append(deleteBtn, ' ', editBtn);
+                            row.append(deleteCell);
+                            table.append(row);
+                        }
+                        //edit button
+                        
+                        $("#addClassModal").modal("hide");
+                    });
+                });
+
+            });
+
+        </script>
+    </body>
+</html>
